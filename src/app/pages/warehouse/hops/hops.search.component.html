@@ -1,0 +1,117 @@
+<p-dialog
+  header="Select Hops"
+  [resizable]="true"
+  [modal]="true"
+  [maximizable]="true"
+  appendTo="body"
+  (onHide)="onHide()"
+  [(visible)]="dialogVisible"
+  [style]="{ width: '75vw' }"
+  [contentStyle]="{ height: '75vh' }"
+>
+  <p-table
+    [value]="hopsCatalog"
+    selectionMode="single"
+    [(selection)]="selectedHops"
+    dataKey="id"
+    responsiveLayout="scroll"
+    [globalFilterFields]="['name', 'type', 'form', 'utilization', 'alpha']"
+    [scrollable]="true"
+    scrollHeight="flex"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <div class="flex align-items-center justify-content-between">
+          <span class="p-input-icon-left ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search keyword"
+            />
+          </span>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="caption">
+      <div class="flex">
+        <div class="flex align-items-center justify-content-between">
+          <span class="p-input-icon-left ml-auto">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt1.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search keyword"
+            />
+          </span>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">
+          Name <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="type">
+          Type <p-sortIcon field="type"></p-sortIcon>
+        </th>
+        <th pSortableColumn="form">
+          Form <p-sortIcon field="form"></p-sortIcon>
+        </th>
+        <th pSortableColumn="alpha">
+          Alpha <p-sortIcon field="alpha"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-hops>
+      <tr [pSelectableRow]="hops">
+        <td>{{ hops.name }}</td>
+        <td>
+          <nb-icon
+            *ngIf="hops.type == 'Both'"
+            icon="bittering"
+            pack="hops"
+          ></nb-icon>
+          <nb-icon
+            *ngIf="hops.type == 'Both'"
+            icon="aroma"
+            pack="hops"
+          ></nb-icon>
+          <nb-icon
+            *ngIf="hops.type != 'Both'"
+            icon="{{ hops.type.toLowerCase() }}"
+            pack="hops"
+          ></nb-icon>
+          {{ hops.type }}
+        </td>
+        <td>
+          <nb-icon icon="{{ hops.form.toLowerCase() }}" pack="hops"></nb-icon>
+          {{ hops.form }}
+        </td>
+        <td>{{ hops.alpha }}&nbsp;%</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      [disabled]="selectedHops == null"
+      (click)="selectHops()"
+      label="Select"
+      class="p-button-text"
+    ></button>
+    <button
+      type="button"
+      pButton
+      pRipple
+      icon="pi pi-times"
+      (click)="dialogVisible = false"
+      label="Dismiss"
+      class="p-button-text"
+    ></button>
+  </ng-template>
+</p-dialog>

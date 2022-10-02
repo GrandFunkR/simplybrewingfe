@@ -1,0 +1,49 @@
+
+<form class="mt-4" [formGroup]="settingsForm" (ngSubmit)="saveChanges()">
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <nb-card size="small">
+        <nb-card-body>
+          <nb-tabset>
+            <nb-tab tabTitle="Profile">
+              <div>&nbsp;</div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <span class="p-float-label">
+                    <input
+                      pInputText
+                      nbInput
+                      fullWidth
+                      type="text"
+                      formControlName="fullName"
+                      autofocus
+                      [required]="true"
+                      [pKeyFilter]="genericStringValidations"
+                    />
+                    <label class="label" for="inputtext">Full name</label>
+                  </span>
+                </div>
+              </div>
+            </nb-tab>
+            <nb-tab tabTitle="Simple Tab #2">
+              <span>Content #2</span>
+            </nb-tab>
+            <nb-tab tabTitle="Simple Tab #3">
+              <span>Content #3</span>
+            </nb-tab>
+          </nb-tabset>
+        </nb-card-body>
+        <nb-card-footer>
+          <button
+            type="submit"
+            nbButton
+            status="primary"
+            [disabled]="settingsForm.pristine || settingsForm.invalid"
+          >
+            Save changes
+          </button>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </div>
+</form>

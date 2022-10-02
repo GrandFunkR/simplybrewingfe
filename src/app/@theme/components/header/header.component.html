@@ -1,0 +1,116 @@
+<!--div class="card w-full">
+  <div class="flex card-container blue-container overflow-hidden">
+    <div
+      class="flex-none flex align-items-center justify-content-center bg-blue-500 font-bold text-white m-2 px-5 py-3 border-round"
+    >
+      PrimeFlex
+    </div>
+    <div
+      class="flex-grow-1 flex align-items-center justify-content-center bg-blue-500 font-bold text-white m-2 px-5 py-3 border-round"
+    >
+      PrimeFlex
+    </div>
+    <div
+      class="flex-none flex align-items-center justify-content-center bg-blue-500 font-bold text-white m-2 px-5 py-3 border-round"
+    >
+      PrimeFlex
+    </div>
+  </div>
+</div-->
+
+<div class="header-container w-full">
+  <div class="logo-container">
+    <div class="flex gap-4">
+      <div class="flex-none flex align-items-center justify-content-center">
+        <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+          <nb-icon
+            class="menu-icon header-text-color"
+            icon="menu-2-outline"
+          ></nb-icon
+        ></a>
+      </div>
+
+      <div class="flex-none flex align-items-center justify-content-center">
+        <div class="min-h-full flex align-items-center justify-content-center">
+          <a href="#" class="no-underline text-3xl header-text-color"
+            >Simply Brewing</a
+          >
+        </div>
+        <!--a
+          class="logo flex align-items-center justify-content-center bg-purple-500 font-bold text-white border-round m-2"
+          href="#"
+          (click)="navigateHome()"
+          ><p
+            class="text-2xl no-underline relative md:bottom-0 md:left-0 bg-yellow-500 flex align-items-bottom justify-content-bottom border-round"
+          >
+            Simply Brewing
+          </p></a
+        -->
+      </div>
+      <div class="flex-grow-1 flex"></div>
+      <div class="flex-none flex align-items-center justify-content-center">
+        <nb-select
+          [selected]="currentTheme"
+          (selectedChange)="changeTheme($event)"
+          status="primary"
+        >
+          <nb-option *ngFor="let theme of themes" [value]="theme.value">
+            {{ theme.name }}</nb-option
+          >
+        </nb-select>
+        <nb-actions size="small">
+          <nb-action class="control-item">
+            <nb-search type="rotate-layout"></nb-search>
+          </nb-action>
+          <nb-action class="control-item" icon="email-outline"></nb-action>
+          <nb-action class="control-item" icon="bell-outline"></nb-action>
+          <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+            <nb-user
+              [nbContextMenu]="userMenu"
+              [onlyPicture]="userPictureOnly"
+              [name]="user?.fullName"
+              [picture]="user?.picture"
+            >
+            </nb-user>
+          </nb-action>
+        </nb-actions>
+      </div>
+      <!--div class="col-4">
+        <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+          <nb-icon icon="menu-2-outline"></nb-icon>
+          <a class="logo" href="#" (click)="navigateHome()"
+            ><p class="text-3xl w-10">Simply Brewing</p></a
+          >
+        </a>
+      </div-->
+    </div>
+  </div>
+</div>
+
+<!--div class="header-container">
+  <nb-select
+    [selected]="currentTheme"
+    (selectedChange)="changeTheme($event)"
+    status="primary"
+  >
+    <nb-option *ngFor="let theme of themes" [value]="theme.value">
+      {{ theme.name }}</nb-option
+    >
+  </nb-select>
+  <nb-actions size="small">
+    <nb-action class="control-item">
+      <nb-search type="rotate-layout"></nb-search>
+    </nb-action>
+    <nb-action class="control-item" icon="email-outline"></nb-action>
+    <nb-action class="control-item" icon="bell-outline"></nb-action>
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+      <nb-user
+        [nbContextMenu]="userMenu"
+        [onlyPicture]="userPictureOnly"
+        [name]="user?.fullName"
+        [picture]="user?.picture"
+      >
+      </nb-user>
+    </nb-action>
+  </nb-actions>
+</div-->

@@ -1,0 +1,127 @@
+@import '../../styles/themes';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+  $padding-top: nb-theme(layout-padding-top);
+  .menu-sidebar ::ng-deep .scrollable {
+    padding-top: nb-theme(layout-padding-top);
+  }
+
+  nb-layout-header.fixednew {
+    top: $padding-top;
+  }
+
+  nb-layout-header.fixednew~.layout-container nb-sidebar .main-container-fixednew {
+    height: calc(100vh - #{$padding-top} - #{nb-theme(header-height)});
+    top: calc(#{$padding-top} + #{nb-theme(header-height)});
+  }
+
+  nb-sidebar.fixednew {
+    left: calc((100vw - #{nb-theme(layout-window-mode-max-width)}) / 2);
+  }
+
+  .layout .layout-container {
+    nb-sidebar.fixednew.right {
+      right: calc((100vw - #{nb-theme(layout-window-mode-max-width)}) / 2);
+    }
+
+    nb-sidebar.fixednew {
+      top: calc(#{nb-theme(header-height)} + #{$padding-top});
+    }
+  }
+
+  .layout-container {
+
+    nb-sidebar {
+
+      &.fixednew,
+      .main-container-fixednew {
+        top: nb-theme(header-height);
+      }
+    }
+  }
+
+
+  nb-layout-header {
+    &.fixednew~.layout-container {
+        padding-top: nb-theme(header-height);
+        min-height: nb-theme(layout-min-height);
+    }
+
+    &.fixednew~.layout-container nb-sidebar .main-container {
+      height: calc(#{nb-theme(sidebar-height)} - #{nb-theme(header-height)});
+    }
+  }
+  ::ng-deep nb-layout-header {
+    &.fixednew {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1040;
+      }
+  }
+
+
+  .layout-container {
+    .fixednew {
+        position: fixed;
+        width: 100%;
+        overflow-y: auto;
+        height: 100%;
+      }
+  }
+
+  nb-sidebar {
+    &.compacted {
+      &.left.fixednew~.content {
+          margin-left: nb-theme(sidebar-width-compact);
+      }
+
+      &.fixednew.right~.content {
+        margin-left: 0;
+        margin-right: nb-theme(sidebar-width-compact);
+      }
+
+      &.left.fixednew~.content.center {
+        padding-left: nb-theme(sidebar-width-compact);
+      }
+
+      &.fixednew.right~.content.center {
+        padding-left: 0;
+        padding-right: nb-theme(sidebar-width-compact);
+      }
+
+      &.start.fixednew~.content {
+        @include nb-ltr(margin-left, nb-theme(sidebar-width-compact));
+        @include nb-rtl(margin-right, nb-theme(sidebar-width-compact));
+      }
+
+      &.fixednew.end~.content {
+        @include nb-ltr(margin-right, nb-theme(sidebar-width-compact));
+        @include nb-rtl(margin-left, nb-theme(sidebar-width-compact));
+      }
+
+      &.start.fixednew~.content.center {
+        @include nb-ltr(padding-left, nb-theme(sidebar-width-compact));
+        @include nb-rtl(padding-right, nb-theme(sidebar-width-compact));
+      }
+
+      &.fixednew.end~.content.center {
+        @include nb-ltr(padding-right, nb-theme(sidebar-width-compact));
+        @include nb-rtl(padding-left, nb-theme(sidebar-width-compact));
+      }
+    }
+    &.fixednew.left.collapsed+.content,
+    &.fixednew.start.collapsed+.content {
+      margin-left: 0;
+    }
+
+    &.fixednew.right.collapsed+.content,
+    &.fixednew.end.collapsed+.content {
+      margin-right: 0;
+    }
+  }
+}
+
