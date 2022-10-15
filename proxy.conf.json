@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://simplybrewingdemo.herokuapp.com:80",
+    "target": "http://localhost:9091",
     "secure": false
   }
 }

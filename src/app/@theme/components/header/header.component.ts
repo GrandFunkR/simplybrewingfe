@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
-  NbMediaBreakpointsService,
-  NbMenuService,
-  NbSidebarService,
-  NbThemeService,
+	NbMediaBreakpointsService,
+	NbMenuService,
+	NbSidebarService,
+	NbThemeService,
 } from "@nebular/theme";
 
 import { LayoutService } from "../../../@core/utils";
@@ -15,109 +15,122 @@ import { User } from "../../../models/user.model";
 import { PrimeNgThemeService } from "../../../services/primeng.theme.service";
 
 @Component({
-  selector: "ngx-header",
-  styleUrls: ["./header.component.scss"],
-  templateUrl: "./header.component.html",
+	selector: "ngx-header",
+	styleUrls: ["./header.component.scss"],
+	templateUrl: "./header.component.html",
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
-  userPictureOnly: boolean = false;
-  user: User;
+	private destroy$: Subject<void> = new Subject<void>();
+	userPictureOnly: boolean = false;
+	isMobile: boolean = false;
+	user: User;
 
-  themes = [
-    {
-      value: "default",
-      name: "Light",
-    },
-    {
-      value: "dark",
-      name: "Dark",
-    },
-    {
-      value: "cosmic",
-      name: "Cosmic",
-    },
-    {
-      value: "corporate",
-      name: "Corporate",
-    },
-  ];
+	themes = [
+		{
+			value: "default",
+			name: "Light",
+		},
+		{
+			value: "dark",
+			name: "Dark",
+		},
+		{
+			value: "cosmic",
+			name: "Cosmic",
+		},
+		{
+			value: "corporate",
+			name: "Corporate",
+		},
+	];
 
-  currentTheme = "default";
+	currentTheme = "default";
 
-  userMenu = [
-    { title: "Profile", link: "/pages/user/settings" },
-    { title: "Log out", link: "/auth/logout" },
-  ];
+	userMenu = [
+		{ title: "Profile", link: "/pages/user/settings" },
+		{ title: "Log out", link: "/auth/logout" },
+	];
 
-  constructor(
-    private sidebarService: NbSidebarService,
-    private menuService: NbMenuService,
-    private themeService: NbThemeService,
-    private layoutService: LayoutService,
-    private breakpointService: NbMediaBreakpointsService,
-    private authService: NbAuthService,
-    private settingsService: SettingsService,
-    private primengThemeService: PrimeNgThemeService,
-  ) {
-    this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
-      if (token.isValid()) {
-        this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
-        this.themeService.changeTheme(this.user.themeName);
-        this.primengThemeService.switchTheme(this.user.themeName);
-      }
-    });
-  }
+	constructor(
+		private sidebarService: NbSidebarService,
+		private menuService: NbMenuService,
+		private themeService: NbThemeService,
+		private layoutService: LayoutService,
+		private breakpointService: NbMediaBreakpointsService,
+		private authService: NbAuthService,
+		private settingsService: SettingsService,
+		private primengThemeService: PrimeNgThemeService
+	) {
+		this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+			if (token.isValid()) {
+				this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
+				this.themeService.changeTheme(this.user.themeName);
+				this.primengThemeService.switchTheme(this.user.themeName);
+			}
+		});
+	}
 
-  ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+	ngOnInit() {
+		this.currentTheme = this.themeService.currentTheme;
 
-    const { xl } = this.breakpointService.getBreakpointsMap();
-    this.themeService
-      .onMediaQueryChange()
-      .pipe(
-        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(
-        (isLessThanXl: boolean) => (this.userPictureOnly = isLessThanXl)
-      );
+		const { xl } = this.breakpointService.getBreakpointsMap();
+		const { is } = this.breakpointService.getBreakpointsMap();
+		this.themeService
+			.onMediaQueryChange()
+			.pipe(
+				map(([, currentBreakpoint]) => currentBreakpoint),
+				takeUntil(this.destroy$)
+			)
+			.subscribe((currentBreakpoint) => {
+				this.userPictureOnly = currentBreakpoint.width < xl;
+				this.isMobile = currentBreakpoint.width <= is;
+				console.log("this.isMobile", this.isMobile);
+			});
 
-    this.themeService
-      .onThemeChange()
-      .pipe(
-        map(({ name }) => name),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((themeName) => (this.currentTheme = themeName));
-  }
+		this.themeService
+			.onThemeChange()
+			.pipe(
+				map(({ name }) => name),
+				takeUntil(this.destroy$)
+			)
+			.subscribe((themeName) => (this.currentTheme = themeName));
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+		// ...
 
-  changeTheme(themeName: string) {
-    this.themeService.changeTheme(themeName);
-    this.primengThemeService.switchTheme(themeName);
+		// ...
+		this.menuService.onItemClick().subscribe(() => {
+			if (this.isMobile) {
+				this.sidebarService.collapse("menu-sidebar");
+			}
+		});
+	}
 
-    let settings: User = new User();
-    settings.themeName = themeName;
+	ngOnDestroy() {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
 
-    this.settingsService.saveSettings(settings).subscribe((response: any) => {
-      console.log("response", response);
-    });
-  }
+	changeTheme(themeName: string) {
+		this.themeService.changeTheme(themeName);
+		this.primengThemeService.switchTheme(themeName);
 
-  toggleSidebar(): boolean {
-    this.sidebarService.toggle(true, "menu-sidebar");
-    this.layoutService.changeLayoutSize();
+		let settings: User = new User();
+		settings.themeName = themeName;
 
-    return false;
-  }
+		this.settingsService.saveSettings(settings).subscribe((response: any) => {
+			console.log("response", response);
+		});
+	}
 
-  navigateHome() {
-    this.menuService.navigateHome();
-    return false;
-  }
+	toggleSidebar(): boolean {
+		this.sidebarService.toggle(true, "menu-sidebar");
+		this.layoutService.changeLayoutSize();
+
+		return false;
+	}
+
+	navigateHome() {
+		this.menuService.navigateHome();
+		return false;
+	}
 }
